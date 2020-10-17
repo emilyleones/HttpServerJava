@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
+    testImplementation "com.squareup.okhttp3:okhttp:4.9.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
+    testImplementation "org.assertj:assertj-core:3.15.0"
+    testImplementation "org.mockito:mockito-core:3.0.0"
+}
+
+test {
+    useJUnitPlatform()
+}
