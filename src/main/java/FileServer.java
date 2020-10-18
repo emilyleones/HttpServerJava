@@ -8,6 +8,11 @@ public class FileServer {
     private Socket clientSocket;
     private OutputStream out;
     private BufferedReader in;
+    private String rootDirectory;
+
+    public FileServer(String rootDirectory) {
+        this.rootDirectory = rootDirectory;
+    }
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -19,8 +24,7 @@ public class FileServer {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String request = in.readLine();
             String fileName = getFileName(request);
-            String baseDirectory = System.getProperty("java.io.tmpdir") + File.separator + "TestWebRoot";
-            File file = new File(baseDirectory + File.separator + fileName);
+            File file = new File(rootDirectory + File.separator + fileName);
             FileInputStream inputStream = new FileInputStream(file);
             byte[] contentBytes = inputStream.readAllBytes();
             out.write("HTTP/1.1 200 OK\n".getBytes());
@@ -48,7 +52,7 @@ public class FileServer {
     }
 
     public static void main(String[] args) {
-        FileServer server = new FileServer();
+        FileServer server = new FileServer(args[0]);
         try {
             server.start(8080);
             server.stop();

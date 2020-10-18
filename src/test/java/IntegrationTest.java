@@ -11,18 +11,22 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegrationTest {
+    private static String TEMP_DIRECTORY = System.getProperty("java.io.tmpdir") + File.separator + "TestWebRoot";
+
     @BeforeEach
     void setUp() throws IOException {
         String resourcesDirectory = IntegrationTest.class.getClassLoader().getResource("fixtures/web").getPath();
         File source = new File(resourcesDirectory);
-        String tempDirectory = System.getProperty("java.io.tmpdir") + File.separator + "TestWebRoot";
-        File target = new File(tempDirectory);
+        File target = new File(TEMP_DIRECTORY);
         FileUtils.copyDirectory(source, target);
     }
 
     @Test
     void shouldServeValidHttpResponseWithFileWhenGetRequestIsSent() throws IOException {
         // Given
+        TestServer testServer = new TestServer(TEMP_DIRECTORY);
+        testServer.start();
+
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("http://localhost:8080/file1.txt")
@@ -35,11 +39,15 @@ public class IntegrationTest {
         // Then
         assertThat(response.code()).isEqualTo(200);
         assertThat(response.body().string()).isEqualTo("Hello World");
+
+        testServer.stop();
     }
 
     @Test
     void shouldServeValidHttpResponseWithFileWhenGetRequestOnSpecificResourceIsSent() throws IOException {
         // Given
+        TestServer testServer = new TestServer(TEMP_DIRECTORY);
+        testServer.start();
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("http://localhost:8080/file2.txt")
@@ -52,5 +60,7 @@ public class IntegrationTest {
         // Then
         assertThat(response.code()).isEqualTo(200);
         assertThat(response.body().string()).isEqualTo("Not Hello World");
+
+        testServer.stop();
     }
 }
