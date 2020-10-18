@@ -21,9 +21,8 @@ public class FileService {
     public List<String> getDirectoryListing(String resourcePath) throws IOException {
         String fullPathString = rootDirectory + resourcePath;
         Path fullPath = Path.of(fullPathString);
-        System.out.println(rootDirectory);
 
-        List<String> directoryListing = Files.list(fullPath)
+        return Files.list(fullPath)
                 .map(Path::toString)
                 .map(subPath -> {
                             String[] pathElements = subPath.split("/");
@@ -31,7 +30,6 @@ public class FileService {
                         }
                 )
                 .collect(toList());
-        return directoryListing;
     }
 
     public byte[] readFile(String resourcePath) throws IOException {
