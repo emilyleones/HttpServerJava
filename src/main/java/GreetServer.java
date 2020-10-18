@@ -13,19 +13,21 @@ public class GreetServer {
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
-        clientSocket = serverSocket.accept();
-        out = clientSocket.getOutputStream();
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        byte[] contentBytes = "Hello World".getBytes();
 
-        out.write("HTTP/1.1 200 OK\n".getBytes());
-        out.write("Connection: keep-alive\n".getBytes());
-        out.write("Content-Type: text/html; charset=UTF-8\n".getBytes());
-        out.write(("Content-Length: " + contentBytes.length + "\n").getBytes());
-        out.write("Keep-Alive: timeout=5, max=1000\n".getBytes());
-        out.write("\n".getBytes());
-        out.write(contentBytes);
-        out.flush();
+        while(true) {
+            clientSocket = serverSocket.accept();
+            out = clientSocket.getOutputStream();
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            byte[] contentBytes = "Hello World".getBytes();
+            out.write("HTTP/1.1 200 OK\n".getBytes());
+            out.write("Connection: keep-alive\n".getBytes());
+            out.write("Content-Type: text/html; charset=UTF-8\n".getBytes());
+            out.write(("Content-Length: " + contentBytes.length + "\n").getBytes());
+            out.write("Keep-Alive: timeout=5, max=1000\n".getBytes());
+            out.write("\n".getBytes());
+            out.write(contentBytes);
+            out.flush();
+        }
     }
 
     public void stop() throws IOException {
