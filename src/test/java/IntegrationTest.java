@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegrationTest {
     @Test
-    void shouldServeValidHttpResponse() throws IOException {
+    void shouldServeValidHttpResponseWithFileWhenGetRequestIsSent() throws IOException {
         // Given
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
