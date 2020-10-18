@@ -1,5 +1,4 @@
 import org.apache.commons.io.FileUtils;
-import org.assertj.core.internal.IterableElementComparisonStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

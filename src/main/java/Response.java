@@ -21,10 +21,6 @@ public class Response {
         return content;
     }
 
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
     public void sendToStream(OutputStream outputStream) throws IOException {
         outputStream.write(this.statusLine.getBytes());
         outputStream.write("\n".getBytes());
