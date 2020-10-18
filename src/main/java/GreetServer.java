@@ -16,9 +16,7 @@ public class GreetServer {
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String request = in.readLine();
-            String[] requestParts = request.split(" ");
-            String filePath = requestParts[1];
-            String fileName = filePath.split("/")[1];
+            String fileName = getFileName(request);
             InputStream inputStream = GreetServer.class.getClassLoader().getResourceAsStream(fileName);
             byte[] contentBytes =  inputStream.readAllBytes();
             out.write("HTTP/1.1 200 OK\n".getBytes());
@@ -30,6 +28,12 @@ public class GreetServer {
             out.write(contentBytes);
             out.flush();
         }
+    }
+
+    private String getFileName(String request) {
+        String[] requestParts = request.split(" ");
+        String filePath = requestParts[1];
+        return filePath.split("/")[1];
     }
 
     public void stop() throws IOException {
