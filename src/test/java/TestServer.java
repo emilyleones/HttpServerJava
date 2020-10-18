@@ -1,12 +1,12 @@
 public class TestServer implements Runnable {
     private Thread thread;
-    private String rootDirectory;
+    private final String rootDirectory;
 
     public TestServer(String rootDirectory) {
         this.rootDirectory = rootDirectory;
     }
 
-    // TO-DO: Wait for server to start
+    // TODO: Wait for server to start
     public void start() {
         this.thread = new Thread(this);
         this.thread.start();

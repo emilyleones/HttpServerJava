@@ -63,4 +63,25 @@ public class IntegrationTest {
 
         testServer.stop();
     }
+
+    @Test
+    void shouldServeHtmlListingWhenGetRequestOnRootDirectoryIsSent() throws IOException {
+        // Given
+        TestServer testServer = new TestServer(TEMP_DIRECTORY);
+        testServer.start();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://localhost:8080")
+                .get()
+                .build();
+
+        // When
+        Response response = client.newCall(request).execute();
+
+        // Then
+        assertThat(response.code()).isEqualTo(200);
+        assertThat(response.body().string()).isEqualTo("<html><body><ul><li>file1.txt</li><li>file2.txt</li></ul></body></html>");
+
+        testServer.stop();
+    }
 }
