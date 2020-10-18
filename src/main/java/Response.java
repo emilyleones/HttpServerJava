@@ -18,4 +18,8 @@ public class Response {
     public String getContent() {
         return content;
     }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
 }

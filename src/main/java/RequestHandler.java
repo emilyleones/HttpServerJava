@@ -1,5 +1,7 @@
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ResponseCache;
+import java.util.Map;
 
 public class RequestHandler {
 
@@ -10,7 +12,12 @@ public class RequestHandler {
     }
 
     public Response handle(Request request) throws IOException {
-        return new Response(null, "HTTP/1.1 200 OK", getResponseContent(request));
+        String content = getResponseContent(request);
+        Map<String, String> headers = Map.of("Connection", "keep-alive",
+                "Content-Type", "text/html; charset=UTF-8",
+                "Content-Length", String.valueOf(content.getBytes().length),
+                "Keep-Alive", "timeout=5, max=1000");
+        return new Response(headers, "HTTP/1.1 200 OK", content);
     }
 
     private String getResponseContent(Request request) throws IOException {

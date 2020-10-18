@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.Map;
 
 public class FileServer {
     private ServerSocket serverSocket;
@@ -22,18 +23,15 @@ public class FileServer {
             clientSocket = serverSocket.accept();
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String rawRequest = in.readLine();
-            System.out.println(rawRequest);
             RequestParser requestParser = new RequestParser();
-            Request request = requestParser.parse(rawRequest);
-            String content = requestHandler.handle(request).getContent();
-            out.write("HTTP/1.1 200 OK\n".getBytes());
-            out.write("Connection: keep-alive\n".getBytes());
-            out.write("Content-Type: text/html; charset=UTF-8\n".getBytes());
-            out.write(("Content-Length: " + content.getBytes().length + "\n").getBytes());
-            out.write("Keep-Alive: timeout=5, max=1000\n".getBytes());
+            Request request = requestParser.parse(in.readLine());
+            Response response = requestHandler.handle(request);
+            out.write(response.getStatusLine().getBytes());
+            for (Map.Entry header : response.getHeaders().entrySet()) {
+                out.write((header.getKey() + ": " + header.getValue() + "\n").getBytes());
+            }
             out.write("\n".getBytes());
-            out.write(content.getBytes());
+            out.write(response.getContent().getBytes());
             out.flush();
         }
     }
