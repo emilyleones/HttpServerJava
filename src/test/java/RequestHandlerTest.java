@@ -48,4 +48,22 @@ class RequestHandlerTest {
         assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
         assertThat(response.getContent()).isEqualTo("Hello World");
     }
+
+    @Test
+    void shouldReturn404NotFoundResponseWhenGETRequestIsOnFileThatDoesNotExist() throws IOException {
+        // Given
+        FileService fileService = mock(FileService.class);
+        RequestHandler requestHandler = new RequestHandler(fileService);
+
+        Request request = new Request("GET", "/fileThatDoesNotExist.txt");
+
+        when(fileService.getResourceType(request.getUri())).thenReturn(ResourceTypeResult.NOT_FOUND);
+
+        // When
+        Response response = requestHandler.handle(request);
+
+        // Then
+        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 404 Object Not Found");
+        assertThat(response.getContent()).isEqualTo("Resource Not Found");
+    }
 }

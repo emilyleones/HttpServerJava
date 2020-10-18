@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 public class Response {
@@ -21,5 +23,16 @@ public class Response {
 
     public Map<String, String> getHeaders() {
         return headers;
+    }
+
+    public void sendToStream(OutputStream outputStream) throws IOException {
+        outputStream.write(this.statusLine.getBytes());
+        outputStream.write("\n".getBytes());
+        for (Map.Entry header : this.headers.entrySet()) {
+            outputStream.write((header.getKey() + ": " + header.getValue() + "\n").getBytes());
+        }
+        outputStream.write("\n".getBytes());
+        outputStream.write(this.content.getBytes());
+        outputStream.flush();
     }
 }

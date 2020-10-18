@@ -18,21 +18,15 @@ public class FileServer {
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Server has started.");
+        RequestParser requestParser = new RequestParser();
 
         while (true) {
             clientSocket = serverSocket.accept();
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            RequestParser requestParser = new RequestParser();
             Request request = requestParser.parse(in.readLine());
             Response response = requestHandler.handle(request);
-            out.write(response.getStatusLine().getBytes());
-            for (Map.Entry header : response.getHeaders().entrySet()) {
-                out.write((header.getKey() + ": " + header.getValue() + "\n").getBytes());
-            }
-            out.write("\n".getBytes());
-            out.write(response.getContent().getBytes());
-            out.flush();
+            response.sendToStream(out);
         }
     }
 
