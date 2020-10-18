@@ -15,7 +15,11 @@ public class GreetServer {
             clientSocket = serverSocket.accept();
             out = clientSocket.getOutputStream();
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            InputStream inputStream = GreetServer.class.getClassLoader().getResourceAsStream("file.txt");
+            String request = in.readLine();
+            String[] requestParts = request.split(" ");
+            String filePath = requestParts[1];
+            String fileName = filePath.split("/")[1];
+            InputStream inputStream = GreetServer.class.getClassLoader().getResourceAsStream(fileName);
             byte[] contentBytes =  inputStream.readAllBytes();
             out.write("HTTP/1.1 200 OK\n".getBytes());
             out.write("Connection: keep-alive\n".getBytes());

@@ -12,7 +12,7 @@ public class IntegrationTest {
         // Given
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("http://localhost:8080")
+                .url("http://localhost:8080/file1.txt")
                 .get()
                 .build();
 
@@ -22,5 +22,22 @@ public class IntegrationTest {
         // Then
         assertThat(response.code()).isEqualTo(200);
         assertThat(response.body().string()).isEqualTo("Hello World");
+    }
+
+    @Test
+    void shouldServeValidHttpResponseWithFileWhenGetRequestOnSpecificResourceIsSent() throws IOException {
+        // Given
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/file2.txt")
+                .get()
+                .build();
+
+        // When
+        Response response = client.newCall(request).execute();
+
+        // Then
+        assertThat(response.code()).isEqualTo(200);
+        assertThat(response.body().string()).isEqualTo("Not Hello World");
     }
 }
