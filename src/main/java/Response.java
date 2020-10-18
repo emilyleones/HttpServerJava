@@ -3,9 +3,9 @@ import java.io.OutputStream;
 import java.util.Map;
 
 public class Response {
-    private Map<String, String> headers;
-    private String statusLine;
-    private String content;
+    private final Map<String, String> headers;
+    private final String statusLine;
+    private final String content;
 
     public Response(Map<String, String> headers, String statusLine, String content) {
         this.headers = headers;

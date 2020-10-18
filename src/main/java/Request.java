@@ -1,6 +1,6 @@
 public class Request {
-    private String method;
-    private String uri;
+    private final String method;
+    private final String uri;
 
     public Request(String method, String uri) {
         this.method = method;

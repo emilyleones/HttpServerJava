@@ -1,3 +1,3 @@
 public enum ResourceTypeResult {
-     DIRECTORY, FILE, NOT_FOUND
+    DIRECTORY, FILE, NOT_FOUND
 }

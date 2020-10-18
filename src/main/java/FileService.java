@@ -6,7 +6,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 public class FileService {
-    private String rootDirectory;
+    private final String rootDirectory;
 
     public FileService(String rootDirectory) {
         this.rootDirectory = rootDirectory;

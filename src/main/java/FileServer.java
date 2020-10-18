@@ -4,20 +4,22 @@ import java.net.Socket;
 import java.util.Arrays;
 
 public class FileServer {
+    private static final int PORT = 8080;
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private OutputStream out;
     private BufferedReader in;
-    private RequestHandler requestHandler;
+    private final RequestHandler requestHandler;
+    private final RequestParser requestParser;
 
-    public FileServer(RequestHandler requestHandler) {
+    public FileServer(RequestParser requestParser, RequestHandler requestHandler) {
+        this.requestParser = requestParser;
         this.requestHandler = requestHandler;
     }
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Server has started.");
-        RequestParser requestParser = new RequestParser();
 
         while (true) {
             clientSocket = serverSocket.accept();
@@ -37,11 +39,12 @@ public class FileServer {
     }
 
     public static void main(String[] args) {
+        RequestParser requestParser = new RequestParser();
         FileService fileService = new FileService(args[0]);
         RequestHandler requestHandler = new RequestHandler(fileService);
-        FileServer server = new FileServer(requestHandler);
+        FileServer server = new FileServer(requestParser, requestHandler);
         try {
-            server.start(8080);
+            server.start(PORT);
             server.stop();
         } catch (Exception exception) {
             System.out.println("Encountered exception: " + exception);
