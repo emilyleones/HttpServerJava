@@ -8,10 +8,10 @@ public class FileServer {
     private Socket clientSocket;
     private OutputStream out;
     private BufferedReader in;
-    private String rootDirectory;
+    private FileService fileService;
 
-    public FileServer(String rootDirectory) {
-        this.rootDirectory = rootDirectory;
+    public FileServer(FileService fileService) {
+        this.fileService = fileService;
     }
 
     public void start(int port) throws IOException {
@@ -26,17 +26,15 @@ public class FileServer {
             System.out.println(rawRequest);
             RequestParser requestParser = new RequestParser();
             Request request = requestParser.parse(rawRequest);
-            File file = new File(rootDirectory + request.getUri());
             String contentBytes;
-            if (file.isDirectory()) {
+            if (fileService.getResourceType(request.getUri()).equals(ResourceTypeResult.DIRECTORY)) {
                 StringBuilder directoryListing = new StringBuilder();
-                String[] files = file.list();
-                Arrays.sort(files);
-                Arrays.stream(files).forEach(element -> directoryListing.append(String.format("<li>%s</li>", element)));
+                fileService.getDirectoryListing(request.getUri())
+                        .stream().sorted()
+                        .forEach(element -> directoryListing.append(String.format("<li>%s</li>", element)));
                 contentBytes = String.format("<html><body><ul>%s</ul></body></html>", directoryListing);
             } else {
-                FileInputStream inputStream = new FileInputStream(file);
-                contentBytes = new String(inputStream.readAllBytes());
+                contentBytes = new String(fileService.readFile(request.getUri()));
             }
             out.write("HTTP/1.1 200 OK\n".getBytes());
             out.write("Connection: keep-alive\n".getBytes());
@@ -57,7 +55,8 @@ public class FileServer {
     }
 
     public static void main(String[] args) {
-        FileServer server = new FileServer(args[0]);
+        FileService fileService = new FileService(args[0]);
+        FileServer server = new FileServer(fileService);
         try {
             server.start(8080);
             server.stop();
