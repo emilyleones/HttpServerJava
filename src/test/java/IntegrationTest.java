@@ -1,12 +1,25 @@
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegrationTest {
+    @BeforeEach
+    void setUp() throws IOException {
+        String resourcesDirectory = IntegrationTest.class.getClassLoader().getResource("fixtures/web").getPath();
+        File source = new File(resourcesDirectory);
+        String tempDirectory = System.getProperty("java.io.tmpdir") + File.separator + "TestWebRoot";
+        File target = new File(tempDirectory);
+        FileUtils.copyDirectory(source, target);
+    }
+
     @Test
     void shouldServeValidHttpResponseWithFileWhenGetRequestIsSent() throws IOException {
         // Given
