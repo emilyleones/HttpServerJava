@@ -32,8 +32,8 @@ public class FileService {
                 .collect(toList());
     }
 
-    public byte[] readFile(String resourcePath) throws IOException {
+    public String readFile(String resourcePath) throws IOException {
         Path fullPath = Path.of(rootDirectory + resourcePath);
-        return Files.readAllBytes(fullPath);
+        return new String(Files.readAllBytes(fullPath));
     }
 }
