@@ -28,6 +28,7 @@ public class FileServer {
             Request request = requestParser.parse(in.readLine());
             Response response = requestHandler.handle(request);
             response.sendToStream(out);
+            clientSocket.close();
         }
     }
 

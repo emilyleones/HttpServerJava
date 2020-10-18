@@ -12,7 +12,9 @@ public class RequestHandler {
         String statusLine = getResponseStatusLine(request.getUri());
         String content = getResponseContent(request.getUri());
         Map<String, String> headers = getResponseHeaders(content);
-        return new Response(headers, statusLine, content);
+        return request.getMethod().equals("GET") ?
+                new Response(headers, statusLine, content)
+                : new Response(headers, statusLine, "");
     }
 
     private Map<String, String> getResponseHeaders(String content) {

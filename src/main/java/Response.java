@@ -13,12 +13,16 @@ public class Response {
         this.content = content;
     }
 
+    public Map<String, String> getHeaders() {
+        return this.headers;
+    }
+
     public String getStatusLine() {
         return this.statusLine;
     }
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void sendToStream(OutputStream outputStream) throws IOException {

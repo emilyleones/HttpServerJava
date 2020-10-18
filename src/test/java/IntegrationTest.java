@@ -38,6 +38,10 @@ public class IntegrationTest {
 
         // Then
         assertThat(response.code()).isEqualTo(200);
+        assertThat(response.header("Connection")).isEqualTo("keep-alive");
+        assertThat(response.header("Content-Type")).isEqualTo("text/html; charset=UTF-8");
+        assertThat(response.header("Content-Length")).isEqualTo("11");
+        assertThat(response.header("Keep-Alive")).isEqualTo("timeout=5, max=1000");
         assertThat(response.body().string()).isEqualTo("Hello World");
 
         testServer.stop();
@@ -59,6 +63,10 @@ public class IntegrationTest {
 
         // Then
         assertThat(response.code()).isEqualTo(200);
+        assertThat(response.header("Connection")).isEqualTo("keep-alive");
+        assertThat(response.header("Content-Type")).isEqualTo("text/html; charset=UTF-8");
+        assertThat(response.header("Content-Length")).isEqualTo("15");
+        assertThat(response.header("Keep-Alive")).isEqualTo("timeout=5, max=1000");
         assertThat(response.body().string()).isEqualTo("Not Hello World");
 
         testServer.stop();
@@ -80,6 +88,10 @@ public class IntegrationTest {
 
         // Then
         assertThat(response.code()).isEqualTo(200);
+        assertThat(response.header("Connection")).isEqualTo("keep-alive");
+        assertThat(response.header("Content-Type")).isEqualTo("text/html; charset=UTF-8");
+        assertThat(response.header("Content-Length")).isEqualTo("92");
+        assertThat(response.header("Keep-Alive")).isEqualTo("timeout=5, max=1000");
         assertThat(response.body().string())
                 .isEqualTo("<html><body><ul><li>file1.txt</li><li>file2.txt</li><li>subdirectory</li></ul></body></html>");
 
@@ -104,6 +116,35 @@ public class IntegrationTest {
         assertThat(response.code()).isEqualTo(404);
         assertThat(response.body().string())
                 .isEqualTo("Resource Not Found");
+
+        testServer.stop();
+    }
+
+    @Test
+    void shouldServeValidHttpResponseWithFileWhenHeadRequestIsSent() throws IOException {
+        // Given
+        TestServer testServer = new TestServer(ROOT_DIRECTORY);
+        testServer.start();
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/file1.txt")
+                .head()
+                .build();
+
+        // When
+        Response response = client.newCall(request).execute();
+
+        // Then
+        assertThat(response.code()).isEqualTo(200);
+        assertThat(response.header("Connection")).isEqualTo("keep-alive");
+        assertThat(response.header("Content-Type")).isEqualTo("text/html; charset=UTF-8");
+        assertThat(response.header("Content-Length")).isEqualTo("11");
+        assertThat(response.header("Keep-Alive")).isEqualTo("timeout=5, max=1000");
+
+//        Unfortunately, OkHttpClient automatically cuts out the response body,
+//        so even if the implementation returns a response body, the assertion below will still pass
+//        assertThat(response.body().string()).isEqualTo("");
 
         testServer.stop();
     }

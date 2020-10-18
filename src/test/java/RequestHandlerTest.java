@@ -65,4 +65,27 @@ class RequestHandlerTest {
         assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 404 Object Not Found");
         assertThat(response.getContent()).isEqualTo("Resource Not Found");
     }
+
+    @Test
+    void shouldReturnResponseWithValidHeadersAndEmptyContentWhenHEADRequestIsReceived() throws IOException {
+        // Given
+        FileService fileService = mock(FileService.class);
+        RequestHandler requestHandler = new RequestHandler(fileService);
+
+        Request request = new Request("HEAD", "/file1.txt");
+
+        when(fileService.getResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
+        when(fileService.readFile(request.getUri())).thenReturn("Hello World");
+
+        // When
+        Response response = requestHandler.handle(request);
+
+        // Then
+        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
+        assertThat(response.getHeaders().get("Connection")).isEqualTo("keep-alive");
+        assertThat(response.getHeaders().get("Content-Type")).isEqualTo("text/html; charset=UTF-8");
+        assertThat(response.getHeaders().get("Content-Length")).isEqualTo("11");
+        assertThat(response.getHeaders().get("Keep-Alive")).isEqualTo("timeout=5, max=1000");
+        assertThat(response.getContent()).isEqualTo("");
+    }
 }
