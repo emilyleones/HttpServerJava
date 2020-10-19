@@ -11,7 +11,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class FileServiceTest {
-    private static final String ROOT_DIRECTORY = System.getProperty("java.io.tmpdir") + "TestWebRoot";
+    private static final String ROOT_DIRECTORY = System.getProperty("java.io.tmpdir") + File.separator + "TestWebRoot";
 
     @BeforeEach
     void setUp() throws IOException {
