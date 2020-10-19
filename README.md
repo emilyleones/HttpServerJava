@@ -5,8 +5,8 @@ Basic HTTP/1.1 File Server which handles HEAD and GET requests and basic Keep-Al
 
 1. Run `make build-image` to build Docker image.
 
-2. Run `make run` to serve current working directory (default) OR
- run `make run ROOT_DIR=<User specified root directory>`.
+2. Run `make run` to serve root directory of Docker container (default) OR
+ run `make run ROOT_DIR=<Full path to user-specified root directory>`.
 
 3. Make HEAD or GET requests to `localhost:8080`.
 
