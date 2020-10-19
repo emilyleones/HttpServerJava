@@ -12,13 +12,13 @@ public class FileService {
         this.rootDirectory = rootDirectory;
     }
 
-    public ResourceTypeResult getResourceType(String resourcePath) {
+    public ResourceTypeResult resolveResourceType(String resourcePath) {
         Path fullPath = Path.of(rootDirectory + resourcePath);
         if (Files.notExists(fullPath)) return ResourceTypeResult.NOT_FOUND;
         return Files.isDirectory(fullPath) ? ResourceTypeResult.DIRECTORY : ResourceTypeResult.FILE;
     }
 
-    public List<String> getDirectoryListing(String resourcePath) throws IOException {
+    public List<String> readDirectoryListing(String resourcePath) throws IOException {
         String fullPathString = rootDirectory + resourcePath;
         Path fullPath = Path.of(fullPathString);
 

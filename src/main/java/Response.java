@@ -25,7 +25,7 @@ public class Response {
         return this.content;
     }
 
-    public void sendToStream(OutputStream outputStream) throws IOException {
+    public void sendTo(OutputStream outputStream) throws IOException {
         outputStream.write(this.statusLine.getBytes());
         outputStream.write("\n".getBytes());
         for (Map.Entry header : this.headers.entrySet()) {

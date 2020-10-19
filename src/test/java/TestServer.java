@@ -18,6 +18,6 @@ public class TestServer implements Runnable {
 
     @Override
     public void run() {
-        FileServer.main(new String[]{this.rootDirectory});
+        Main.main(new String[]{this.rootDirectory});
     }
 }

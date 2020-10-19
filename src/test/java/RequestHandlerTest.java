@@ -17,8 +17,8 @@ class RequestHandlerTest {
         Request request = new Request("GET", "/");
         List<String> directoryListing = new ArrayList<>(List.of("file1.txt", "file2.txt", "subdirectory"));
 
-        when(fileService.getResourceType(request.getUri())).thenReturn(ResourceTypeResult.DIRECTORY);
-        when(fileService.getDirectoryListing(request.getUri())).thenReturn(directoryListing);
+        when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.DIRECTORY);
+        when(fileService.readDirectoryListing(request.getUri())).thenReturn(directoryListing);
 
         // When
         Response response = requestHandler.handle(request);
@@ -26,7 +26,7 @@ class RequestHandlerTest {
         // Then
         assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
         assertThat(response.getContent())
-                .isEqualTo("<html><body><ul><li>file1.txt</li><li>file2.txt</li><li>subdirectory</li></ul></body></html>");
+                .isEqualTo("<html><head><title>My Http File Server</title></head><body><ul><li>file1.txt</li><li>file2.txt</li><li>subdirectory</li></ul></body></html>");
     }
 
     @Test
@@ -37,7 +37,7 @@ class RequestHandlerTest {
 
         Request request = new Request("GET", "/file1.txt");
 
-        when(fileService.getResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
+        when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
         when(fileService.readFile(request.getUri())).thenReturn("Hello World");
 
         // When
@@ -56,7 +56,7 @@ class RequestHandlerTest {
 
         Request request = new Request("GET", "/fileThatDoesNotExist.txt");
 
-        when(fileService.getResourceType(request.getUri())).thenReturn(ResourceTypeResult.NOT_FOUND);
+        when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.NOT_FOUND);
 
         // When
         Response response = requestHandler.handle(request);
@@ -74,7 +74,7 @@ class RequestHandlerTest {
 
         Request request = new Request("HEAD", "/file1.txt");
 
-        when(fileService.getResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
+        when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
         when(fileService.readFile(request.getUri())).thenReturn("Hello World");
 
         // When

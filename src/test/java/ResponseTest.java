@@ -17,7 +17,7 @@ class ResponseTest {
                 "Some Content";
 
         // When
-        response.sendToStream(outputStream);
+        response.sendTo(outputStream);
         String actualStringFromStream = new String(outputStream.toByteArray());
 
         // Then

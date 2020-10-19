@@ -24,7 +24,7 @@ class FileServiceTest {
         FileService fileService = new FileService(ROOT_DIRECTORY);
 
         // Then
-        assertThat(fileService.getResourceType("/")).isEqualTo(ResourceTypeResult.DIRECTORY);
+        assertThat(fileService.resolveResourceType("/")).isEqualTo(ResourceTypeResult.DIRECTORY);
     }
 
     @Test
@@ -33,7 +33,7 @@ class FileServiceTest {
         FileService fileService = new FileService(ROOT_DIRECTORY);
 
         // Then
-        assertThat(fileService.getResourceType("/file1.txt")).isEqualTo(ResourceTypeResult.FILE);
+        assertThat(fileService.resolveResourceType("/file1.txt")).isEqualTo(ResourceTypeResult.FILE);
     }
 
     @Test
@@ -42,7 +42,7 @@ class FileServiceTest {
         FileService fileService = new FileService(ROOT_DIRECTORY);
 
         // Then
-        assertThat(fileService.getResourceType("/fileThatDoesNotExist.txt")).isEqualTo(ResourceTypeResult.NOT_FOUND);
+        assertThat(fileService.resolveResourceType("/fileThatDoesNotExist.txt")).isEqualTo(ResourceTypeResult.NOT_FOUND);
     }
 
     @Test
@@ -51,7 +51,7 @@ class FileServiceTest {
         FileService fileService = new FileService(ROOT_DIRECTORY);
 
         // Then
-        assertThat(fileService.getDirectoryListing("/")).containsExactlyInAnyOrder("file1.txt", "file2.txt", "subdirectory");
+        assertThat(fileService.readDirectoryListing("/")).containsExactlyInAnyOrder("file1.txt", "file2.txt", "subdirectory");
     }
 
     @Test
@@ -60,7 +60,7 @@ class FileServiceTest {
         FileService fileService = new FileService(ROOT_DIRECTORY);
 
         // Then
-        assertThat(fileService.getDirectoryListing("/subdirectory")).containsExactlyInAnyOrder("fileInSubdirectory.txt");
+        assertThat(fileService.readDirectoryListing("/subdirectory")).containsExactlyInAnyOrder("fileInSubdirectory.txt");
     }
 
     @Test

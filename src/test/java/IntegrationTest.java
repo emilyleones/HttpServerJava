@@ -90,10 +90,10 @@ public class IntegrationTest {
         assertThat(response.code()).isEqualTo(200);
         assertThat(response.header("Connection")).isEqualTo("keep-alive");
         assertThat(response.header("Content-Type")).isEqualTo("text/html; charset=UTF-8");
-        assertThat(response.header("Content-Length")).isEqualTo("92");
+        assertThat(response.header("Content-Length")).isEqualTo("139");
         assertThat(response.header("Keep-Alive")).isEqualTo("timeout=5, max=1000");
         assertThat(response.body().string())
-                .isEqualTo("<html><body><ul><li>file1.txt</li><li>file2.txt</li><li>subdirectory</li></ul></body></html>");
+                .isEqualTo("<html><head><title>My Http File Server</title></head><body><ul><li>file1.txt</li><li>file2.txt</li><li>subdirectory</li></ul></body></html>");
 
         testServer.stop();
     }

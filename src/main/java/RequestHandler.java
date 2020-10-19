@@ -9,8 +9,8 @@ public class RequestHandler {
     }
 
     public Response handle(Request request) throws IOException {
-        String statusLine = getResponseStatusLine(request.getUri());
-        String content = getResponseContent(request.getUri());
+        String statusLine = getStatusLine(request.getUri());
+        String content = resolveResponseBody(request.getUri());
         Map<String, String> headers = getResponseHeaders(content);
         return request.getMethod().equals("GET") ?
                 new Response(headers, statusLine, content)
@@ -24,19 +24,19 @@ public class RequestHandler {
                 "Keep-Alive", "timeout=5, max=1000");
     }
 
-    private String getResponseStatusLine(String resourcePath) {
-        return (fileService.getResourceType(resourcePath).equals(ResourceTypeResult.NOT_FOUND)) ?
+    private String getStatusLine(String resourcePath) {
+        return (fileService.resolveResourceType(resourcePath).equals(ResourceTypeResult.NOT_FOUND)) ?
                 "HTTP/1.1 404 Object Not Found" : "HTTP/1.1 200 OK";
     }
 
-    private String getResponseContent(String resourcePath) throws IOException {
-        switch (fileService.getResourceType(resourcePath)) {
+    private String resolveResponseBody(String resourcePath) throws IOException {
+        switch (fileService.resolveResourceType(resourcePath)) {
             case DIRECTORY:
                 StringBuilder directoryListing = new StringBuilder();
-                fileService.getDirectoryListing(resourcePath)
+                fileService.readDirectoryListing(resourcePath)
                         .stream().sorted()
                         .forEach(element -> directoryListing.append(String.format("<li>%s</li>", element)));
-                return String.format("<html><body><ul>%s</ul></body></html>", directoryListing);
+                return String.format("<html><head><title>My Http File Server</title></head><body><ul>%s</ul></body></html>", directoryListing);
             case FILE:
                 return fileService.readFile(resourcePath);
             case NOT_FOUND:
