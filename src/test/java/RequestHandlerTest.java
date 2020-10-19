@@ -49,7 +49,7 @@ class RequestHandlerTest {
     }
 
     @Test
-    void shouldReturn404NotFoundResponseWhenGETRequestIsOnFileThatDoesNotExist() throws IOException {
+    void shouldReturn404NotFoundResponseWhenGETRequestIsOnFileThatDoesNotExist() {
         // Given
         FileService fileService = mock(FileService.class);
         RequestHandler requestHandler = new RequestHandler(fileService);
@@ -87,5 +87,24 @@ class RequestHandlerTest {
         assertThat(response.getHeaders().get("Content-Length")).isEqualTo("11");
         assertThat(response.getHeaders().get("Keep-Alive")).isEqualTo("timeout=5, max=1000");
         assertThat(response.getContent()).isEqualTo("");
+    }
+
+    @Test
+    void shouldReturn500ResponseWhenAnExceptionIsThrown() throws IOException {
+        // Given
+        FileService fileService = mock(FileService.class);
+        RequestHandler requestHandler = new RequestHandler(fileService);
+
+        Request request = new Request("HEAD", "/file1.txt", false);
+
+        when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
+        when(fileService.readFile(request.getUri())).thenThrow(new IllegalStateException());
+
+        // When
+        Response response = requestHandler.handle(request);
+
+        // Then
+        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 500 Internal Server Error");
+        assertThat(response.getContent()).isEqualTo("An error occurred.");
     }
 }

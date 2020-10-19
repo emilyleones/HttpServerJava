@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
 public class RequestHandler {
@@ -8,13 +9,18 @@ public class RequestHandler {
         this.fileService = fileService;
     }
 
-    public Response handle(Request request) throws IOException {
-        String statusLine = getStatusLine(request.getUri());
-        String content = resolveResponseBody(request.getUri());
-        Map<String, String> headers = getResponseHeaders(content);
-        return request.getMethod().equals("GET") ?
-                new Response(headers, statusLine, content)
-                : new Response(headers, statusLine, "");
+    public Response handle(Request request) {
+        try {
+            String statusLine = getStatusLine(request.getUri());
+            String content = resolveResponseBody(request.getUri());
+
+            Map<String, String> headers = getResponseHeaders(content);
+            return request.getMethod().equals("GET") ?
+                    new Response(headers, statusLine, content)
+                    : new Response(headers, statusLine, "");
+        } catch (Throwable e) {
+            return new Response(Collections.emptyMap(), "HTTP/1.1 500 Internal Server Error", "An error occurred.");
+        }
     }
 
     private Map<String, String> getResponseHeaders(String content) {
