@@ -19,7 +19,7 @@ public class RequestHandler {
                     new Response(headers, statusLine, content)
                     : new Response(headers, statusLine, "");
         } catch (Throwable e) {
-            return new Response(Collections.emptyMap(), "HTTP/1.1 500 Internal Server Error", "An error occurred.");
+            return new Response(Collections.emptyMap(), ResponseStatus.INTERNAL_SERVER_ERROR.getStatusLine(), "An error occurred.");
         }
     }
 
@@ -32,7 +32,7 @@ public class RequestHandler {
 
     private String getStatusLine(String resourcePath) {
         return (fileService.resolveResourceType(resourcePath).equals(ResourceTypeResult.NOT_FOUND)) ?
-                "HTTP/1.1 404 Not Found" : "HTTP/1.1 200 OK";
+                ResponseStatus.NOT_FOUND.getStatusLine() : ResponseStatus.OK.getStatusLine();
     }
 
     private String resolveResponseBody(String resourcePath) throws IOException {

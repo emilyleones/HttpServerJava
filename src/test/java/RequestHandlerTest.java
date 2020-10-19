@@ -24,7 +24,7 @@ class RequestHandlerTest {
         Response response = requestHandler.handle(request);
 
         // Then
-        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
+        assertThat(response.getStatusLine()).isEqualTo(ResponseStatus.OK.getStatusLine());
         assertThat(response.getContent())
                 .isEqualTo("<html><head><title>My Http File Server</title></head><body><ul><li>file1.txt</li><li>file2.txt</li><li>subdirectory</li></ul></body></html>");
     }
@@ -44,7 +44,7 @@ class RequestHandlerTest {
         Response response = requestHandler.handle(request);
 
         // Then
-        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
+        assertThat(response.getStatusLine()).isEqualTo(ResponseStatus.OK.getStatusLine());
         assertThat(response.getContent()).isEqualTo("Hello World");
     }
 
@@ -62,7 +62,7 @@ class RequestHandlerTest {
         Response response = requestHandler.handle(request);
 
         // Then
-        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 404 Not Found");
+        assertThat(response.getStatusLine()).isEqualTo(ResponseStatus.NOT_FOUND.getStatusLine());
         assertThat(response.getContent()).isEqualTo("Resource Not Found");
     }
 
@@ -81,7 +81,7 @@ class RequestHandlerTest {
         Response response = requestHandler.handle(request);
 
         // Then
-        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
+        assertThat(response.getStatusLine()).isEqualTo(ResponseStatus.OK.getStatusLine());
         assertThat(response.getHeaders().get("Connection")).isEqualTo("Keep-Alive");
         assertThat(response.getHeaders().get("Content-Type")).isEqualTo("text/html; charset=UTF-8");
         assertThat(response.getHeaders().get("Content-Length")).isEqualTo("11");
@@ -103,7 +103,7 @@ class RequestHandlerTest {
         Response response = requestHandler.handle(request);
 
         // Then
-        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 500 Internal Server Error");
+        assertThat(response.getStatusLine()).isEqualTo(ResponseStatus.INTERNAL_SERVER_ERROR.getStatusLine());
         assertThat(response.getContent()).isEqualTo("An error occurred.");
     }
 
