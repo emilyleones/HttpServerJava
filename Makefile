@@ -1,5 +1,5 @@
 
-build:
+build-image:
 	docker build -t http-server .
 
 run:
