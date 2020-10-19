@@ -14,7 +14,7 @@ class RequestHandlerTest {
         FileService fileService = mock(FileService.class);
         RequestHandler requestHandler = new RequestHandler(fileService);
 
-        Request request = new Request("GET", "/");
+        Request request = new Request("GET", "/", false);
         List<String> directoryListing = new ArrayList<>(List.of("file1.txt", "file2.txt", "subdirectory"));
 
         when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.DIRECTORY);
@@ -35,7 +35,7 @@ class RequestHandlerTest {
         FileService fileService = mock(FileService.class);
         RequestHandler requestHandler = new RequestHandler(fileService);
 
-        Request request = new Request("GET", "/file1.txt");
+        Request request = new Request("GET", "/file1.txt", false);
 
         when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
         when(fileService.readFile(request.getUri())).thenReturn("Hello World");
@@ -54,7 +54,7 @@ class RequestHandlerTest {
         FileService fileService = mock(FileService.class);
         RequestHandler requestHandler = new RequestHandler(fileService);
 
-        Request request = new Request("GET", "/fileThatDoesNotExist.txt");
+        Request request = new Request("GET", "/fileThatDoesNotExist.txt", false);
 
         when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.NOT_FOUND);
 
@@ -72,7 +72,7 @@ class RequestHandlerTest {
         FileService fileService = mock(FileService.class);
         RequestHandler requestHandler = new RequestHandler(fileService);
 
-        Request request = new Request("HEAD", "/file1.txt");
+        Request request = new Request("HEAD", "/file1.txt", false);
 
         when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
         when(fileService.readFile(request.getUri())).thenReturn("Hello World");
