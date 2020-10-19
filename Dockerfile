@@ -28,7 +28,5 @@ COPY --from=TEMP_BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_NAME .
 EXPOSE 8080
 
 # The lines I contributed for my purposes:
-RUN mkdir /defaultRoot
-RUN mkdir /defaultRoot/defaultSubdirectory
-ENV DIR "/defaultRoot"
-ENTRYPOINT java -cp ${ARTIFACT_NAME} Main ${DIR}
+ENV ROOT_DIR /
+ENTRYPOINT java -cp ${ARTIFACT_NAME} Main ${ROOT_DIR}
