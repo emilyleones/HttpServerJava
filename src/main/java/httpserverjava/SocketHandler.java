@@ -1,3 +1,8 @@
+package httpserverjava;
+
+import httpserverjava.http.Request;
+import httpserverjava.http.Response;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

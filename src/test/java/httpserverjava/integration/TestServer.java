@@ -1,3 +1,7 @@
+package httpserverjava.integration;
+
+import httpserverjava.Main;
+
 public class TestServer implements Runnable {
     private Thread thread;
     private final String rootDirectory;

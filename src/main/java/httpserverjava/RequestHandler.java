@@ -1,3 +1,9 @@
+package httpserverjava;
+
+import httpserverjava.http.Request;
+import httpserverjava.http.Response;
+import httpserverjava.http.ResponseStatus;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;

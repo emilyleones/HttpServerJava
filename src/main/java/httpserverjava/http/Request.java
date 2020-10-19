@@ -1,3 +1,5 @@
+package httpserverjava.http;
+
 public class Request {
     private final String method;
     private final String uri;

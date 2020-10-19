@@ -1,3 +1,5 @@
+package httpserverjava.http;
+
 public enum ResponseStatus {
     OK("HTTP/1.1 200 OK"),
     NOT_FOUND("HTTP/1.1 404 Not Found"),

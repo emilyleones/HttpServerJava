@@ -1,3 +1,7 @@
+package httpserverjava;
+
+import httpserverjava.http.Request;
+
 import java.util.List;
 
 public class RequestParser {

@@ -29,4 +29,4 @@ EXPOSE 8080
 
 # The lines I contributed for my purposes:
 ENV ROOT_DIR /
-ENTRYPOINT java -cp ${ARTIFACT_NAME} Main ${ROOT_DIR}
+ENTRYPOINT java -cp ${ARTIFACT_NAME} httpserverjava.Main ${ROOT_DIR}
