@@ -62,7 +62,7 @@ class RequestHandlerTest {
         Response response = requestHandler.handle(request);
 
         // Then
-        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 404 Object Not Found");
+        assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 404 Not Found");
         assertThat(response.getContent()).isEqualTo("Resource Not Found");
     }
 

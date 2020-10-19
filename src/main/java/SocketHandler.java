@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Collections;
 
 public class SocketHandler implements Runnable{
     private final Socket clientSocket;
@@ -20,7 +21,13 @@ public class SocketHandler implements Runnable{
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             Request request = requestParser.parse(in.readLine());
-            Response response = requestHandler.handle(request);
+            System.out.println(request.getMethod() + request.getUri());
+            Response response;
+            try {
+                response = requestHandler.handle(request);
+            } catch (Throwable e) {
+                response = new Response(Collections.emptyMap(), "HTTP/1.1 500 Internal Server Error", "An error occurred.");
+            }
             OutputStream out = clientSocket.getOutputStream();
             response.sendTo(out);
             clientSocket.close();

@@ -26,7 +26,7 @@ public class RequestHandler {
 
     private String getStatusLine(String resourcePath) {
         return (fileService.resolveResourceType(resourcePath).equals(ResourceTypeResult.NOT_FOUND)) ?
-                "HTTP/1.1 404 Object Not Found" : "HTTP/1.1 200 OK";
+                "HTTP/1.1 404 Not Found" : "HTTP/1.1 200 OK";
     }
 
     private String resolveResponseBody(String resourcePath) throws IOException {
