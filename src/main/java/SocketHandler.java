@@ -42,10 +42,10 @@ public class SocketHandler implements Runnable {
         }
     }
 
-    private Optional<Request> awaitRequest(BufferedReader sockerReader) throws IOException {
+    private Optional<Request> awaitRequest(BufferedReader socketReader) throws IOException {
         List<String> lines = new ArrayList<>();
         String line;
-        while ((line = sockerReader.readLine()) != null) {
+        while ((line = socketReader.readLine()) != null) {
             if (line.isBlank()) {
                 System.out.println("New request from client: " + lines.get(0));
                 return Optional.of(requestParser.parse(lines));

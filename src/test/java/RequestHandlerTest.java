@@ -72,7 +72,7 @@ class RequestHandlerTest {
         FileService fileService = mock(FileService.class);
         RequestHandler requestHandler = new RequestHandler(fileService);
 
-        Request request = new Request("HEAD", "/file1.txt", false);
+        Request request = new Request("HEAD", "/file1.txt", true);
 
         when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
         when(fileService.readFile(request.getUri())).thenReturn("Hello World");
@@ -82,10 +82,9 @@ class RequestHandlerTest {
 
         // Then
         assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 200 OK");
-        assertThat(response.getHeaders().get("Connection")).isEqualTo("keep-alive");
+        assertThat(response.getHeaders().get("Connection")).isEqualTo("Keep-Alive");
         assertThat(response.getHeaders().get("Content-Type")).isEqualTo("text/html; charset=UTF-8");
         assertThat(response.getHeaders().get("Content-Length")).isEqualTo("11");
-        assertThat(response.getHeaders().get("Keep-Alive")).isEqualTo("timeout=5, max=1000");
         assertThat(response.getContent()).isEqualTo("");
     }
 
@@ -106,5 +105,23 @@ class RequestHandlerTest {
         // Then
         assertThat(response.getStatusLine()).isEqualTo("HTTP/1.1 500 Internal Server Error");
         assertThat(response.getContent()).isEqualTo("An error occurred.");
+    }
+
+    @Test
+    void shouldReturnResponseWithClosedConnectionHeaderWhenClientRequestConnectionHeaderIsClosed() throws IOException {
+        // Given
+        FileService fileService = mock(FileService.class);
+        RequestHandler requestHandler = new RequestHandler(fileService);
+
+        Request request = new Request("HEAD", "/file1.txt", false);
+
+        when(fileService.resolveResourceType(request.getUri())).thenReturn(ResourceTypeResult.FILE);
+        when(fileService.readFile(request.getUri())).thenReturn("Hello World");
+
+        // When
+        Response response = requestHandler.handle(request);
+
+        // Then
+        assertThat(response.getHeaders().get("Connection")).isEqualTo("Close");
     }
 }

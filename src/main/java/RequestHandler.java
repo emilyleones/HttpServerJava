@@ -14,7 +14,7 @@ public class RequestHandler {
             String statusLine = getStatusLine(request.getUri());
             String content = resolveResponseBody(request.getUri());
 
-            Map<String, String> headers = getResponseHeaders(content);
+            Map<String, String> headers = getResponseHeaders(content, request.getKeepAlive());
             return request.getMethod().equals("GET") ?
                     new Response(headers, statusLine, content)
                     : new Response(headers, statusLine, "");
@@ -23,11 +23,11 @@ public class RequestHandler {
         }
     }
 
-    private Map<String, String> getResponseHeaders(String content) {
-        return Map.of("Connection", "keep-alive",
+    private Map<String, String> getResponseHeaders(String content, boolean keepAlive) {
+        String connectionHeaderValue = keepAlive ? "Keep-Alive" : "Close";
+        return Map.of("Connection", connectionHeaderValue,
                 "Content-Type", "text/html; charset=UTF-8",
-                "Content-Length", String.valueOf(content.getBytes().length),
-                "Keep-Alive", "timeout=5, max=1000");
+                "Content-Length", String.valueOf(content.getBytes().length));
     }
 
     private String getStatusLine(String resourcePath) {
