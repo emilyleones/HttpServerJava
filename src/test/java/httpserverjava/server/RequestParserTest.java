@@ -1,4 +1,4 @@
-package httpserverjava;
+package httpserverjava.server;
 
 import httpserverjava.http.Request;
 import org.junit.jupiter.api.Test;

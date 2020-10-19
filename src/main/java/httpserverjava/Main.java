@@ -1,7 +1,9 @@
 package httpserverjava;
 
-import httpserverjava.FileServer;
-import httpserverjava.FileService;
+import httpserverjava.file.FileService;
+import httpserverjava.server.FileServer;
+import httpserverjava.server.RequestHandler;
+import httpserverjava.server.RequestParser;
 
 import java.util.Arrays;
 

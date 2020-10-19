@@ -1,4 +1,4 @@
-package httpserverjava;
+package httpserverjava.file;
 
 import httpserverjava.integration.IntegrationTest;
 import org.apache.commons.io.FileUtils;

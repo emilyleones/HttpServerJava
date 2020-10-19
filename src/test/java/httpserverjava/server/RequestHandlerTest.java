@@ -1,5 +1,7 @@
-package httpserverjava;
+package httpserverjava.server;
 
+import httpserverjava.file.FileService;
+import httpserverjava.file.ResourceTypeResult;
 import httpserverjava.http.Request;
 import httpserverjava.http.Response;
 import httpserverjava.http.ResponseStatus;
